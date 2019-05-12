@@ -449,24 +449,15 @@ BubbleSort
 ;Vorbereitungen
         movem.l a2-a4/d2-d5,-(sp)       ;register retten
 
-        moveq   #1,d4                   ;"Konstante" 1 in d4 wird oft
-                                        ;für add und sub gebraucht und
-                                        ;ist so schneller
-
-        moveq   #4,d5                   ;"Konstante" 4 in d5 wird oft
-                                        ;für add und sub gebraucht und
-                                        ;ist so schneller
-
         moveq   #0,d1                   ;Init d1 = äußerer Zähler k
                                         ;zunächst 0; wird in bs_k_loop zu 1 etc
 
         moveq   #0,d2                   ;Init d2 = innerer Zähler i
-        sub.l   d4,d2                   ;d2 = d2 - 1
+        subq.l  #1,d2                   ;d2 = d2 - 1
                                         ;zunächst -1; wird in bs_loop zu 0 etc
 
-
         move.l  a0,a1                   ;a1 = a0 (erstes Pufferelement)
-        sub.l   d5,a1                   ;a1 = a1 - 4
+        subq.l  #4,a1                   ;a1 = a1 - 4
                                         ;a1 zeigt zunächst auf Element i-1
 
         move.l  a0,a2                   ;a2 zeigt zunächst auf Element i
@@ -486,24 +477,24 @@ bs_k_loop
         cmp.l   d0,d1
         bge.s   bs_fin                  ;wenn Bedingung erfüllt
 
-        add.l   d4,d1                   ;k = k + 1 (d1 = d1 + d4)
+        addq.l  #1,d1                   ;k = k + 1
 
         moveq   #0,d2                   ;Init d2 = innerer Zähler i
-        sub.l   d4,d2                   ;d2 = d2 - 1
+        subq.l  #1,d2                   ;d2 = d2 - 1
                                         ;zunächst -1; wird in bs_loop zu 0 etc
 
         move.l  a0,a1                   ;a1 = a0 (erstes Pufferelement)
-        sub.l   d5,a1                   ;a1 = a1 - 4
+        subq.l  #4,a1                   ;a1 = a1 - 4
                                         ;a1 zeigt zunächst auf Element i-1
 
         move.l  a0,a2                   ;a2 zeigt zunächst auf Element i
 
 bs_i_loop
 
-        add.l   d4,d2                   ;i = i + 1
+        addq.l  #1,d2                   ;i = i + 1
 
-        add.l   d5,a1                   ;a1 zeigt danach auf Element i
-        add.l   d5,a2                   ;a2 zeigt danach auf Element i+1
+        addq.l  #4,a1                   ;a1 zeigt danach auf Element i
+        addq.l  #4,a2                   ;a2 zeigt danach auf Element i+1
 
         move.l  (a1),d3                 ;(i) in d3 zwischenspeichern
         cmp.l   (a2),d3                 ;Vergleich von (i) und (i+1)
