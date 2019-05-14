@@ -453,11 +453,11 @@ bs_k_loop
         move.l  a0,a2
         move.l  a0,a1
         
-        addq.l  #2,a2                   ; Warum..?
+        addq.l  #4,a2                   ; a2 zeigt auf Nachfolger
         
         move.l  d0,d1
         
-        subq.l  #1,d1                   ; (subi.l ..?)       
+        subq.l  #1,d1                   ; (subi.l ..?)
 bs_i_loop
         cmp.l   (a1)+,(a2)+
         bge.s   skip
