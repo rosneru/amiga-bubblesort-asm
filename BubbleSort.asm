@@ -447,68 +447,32 @@ TimerStop
 *======================================================================
 BubbleSort
 ;Vorbereitungen
-        movem.l a2-a4/d2-d5,-(sp)       ;register retten
-
-        moveq   #0,d1                   ;Init d1 = äußerer Zähler k
-                                        ;zunächst 0; wird in bs_k_loop zu 1 etc
-
-        moveq   #0,d2                   ;Init d2 = innerer Zähler i
-        subq.l  #1,d2                   ;d2 = d2 - 1
-                                        ;zunächst -1; wird in bs_loop zu 0 etc
-
-        move.l  a0,a1                   ;a1 = a0 (erstes Pufferelement)
-        subq.l  #4,a1                   ;a1 = a1 - 4
-                                        ;a1 zeigt zunächst auf Element i-1
-
-        move.l  a0,a2                   ;a2 zeigt zunächst auf Element i
-
+        movem.l a2-a4/d2-d5,-(sp)       ;Register retten
+        
 bs_k_loop
-;Bedingung für i testen; wenn wahr bs_i_loop
-;Bedingung für i ist: i < dataLength - k
-        move.l  d0,d3                   ;dataLength nach d3
-        sub.l   d1,d3                   ;d3 = dataLength - k
-        cmp.l   d3,d2                   ;d2 (i) <=vgl=> d3 (dataLength)
-        blt.s   bs_i_loop               ;Bedingung 'i < dataLenght-k' erfüllt
-
-;nicht erfüllt:
-
-;Bedingung für k testen; wenn falsch bs_fin
-;Bedingung für k ist: k < dataLength
-        cmp.l   d0,d1
-        bge.s   bs_fin                  ;wenn Bedingung erfüllt
-
-        addq.l  #1,d1                   ;k = k + 1
-
-        moveq   #0,d2                   ;Init d2 = innerer Zähler i
-        subq.l  #1,d2                   ;d2 = d2 - 1
-                                        ;zunächst -1; wird in bs_loop zu 0 etc
-
-        move.l  a0,a1                   ;a1 = a0 (erstes Pufferelement)
-        subq.l  #4,a1                   ;a1 = a1 - 4
-                                        ;a1 zeigt zunächst auf Element i-1
-
-        move.l  a0,a2                   ;a2 zeigt zunächst auf Element i
-
+        move.l  a0,a2
+        move.l  a0,a1
+        
+        addq.l  #2,a2                   ; Warum..?
+        
+        move.l  d0,d1
+        
+        subq.l  #1,d1                   ; (subi.l ..?)       
 bs_i_loop
-
-        addq.l  #1,d2                   ;i = i + 1
-
-        addq.l  #4,a1                   ;a1 zeigt danach auf Element i
-        addq.l  #4,a2                   ;a2 zeigt danach auf Element i+1
-
-        move.l  (a1),d3                 ;(i) in d3 zwischenspeichern
-        cmp.l   (a2),d3                 ;Vergleich von (i) und (i+1)
-        ble.s   bs_k_loop               ;wenn (i) <= (i+1)
-
-                                        ;sonst umkopieren
-        move.l  (a2),(a1)               ;(i+1) nach (i) kopieren
-        move.l  d3,(a2)                 ;d3 nach (i+1) kopieren
-        bra.s   bs_k_loop
-
-bs_fin
-        movem.l (sp)+,a2-a4/d2-d5      ;register wiederherstellen
+        cmp.l   (a1)+,(a2)+
+        bge.s   skip
+        
+        move.l  (a1),d3                 ;Tauschen: Item von a1 nach d3 (Temp-Item) kopieren
+        move.l  -4(a1),(a1)             ;a1-Vorgänger-Item nach a1 kopieren
+        move.l  d3,-4(a1)               ;Temp-Item aus d3 nach a1-Vorgänger kopieren 
+skip
+        dbra    d1,bs_i_loop
+        
+        subq.l  #1,d0                   ; (subi.l ..?)
+        bgt.s   bs_k_loop
+        
+        movem.l (sp)+,a2-a4/d2-d5       ;Register wiederherstellen
         rts
-
 
 *======================================================================
 * Unterprogramm decin
