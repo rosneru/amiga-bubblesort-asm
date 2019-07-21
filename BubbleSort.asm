@@ -13,17 +13,43 @@
 *    https://github.com/rosneru
 *======================================================================
 
-        include   exec/exec_lib.i
-        include   exec/execbase.i
-        include   exec/io.i
-        include   exec/memory.i
-        include   exec/ports.i
-        include   dos/dos_lib.i
-        include   dos/dos.i
-        include   dos/dosextens.i
-        include   devices/timer.i
-        include   lvo/timer.i
-        include   lvo/mathieeesingbas.i
+
+        include exec/execbase.i
+        include exec/io.i
+        include exec/memory.i
+        include exec/ports.i
+        include dos/dos.i
+        include dos/dosextens.i
+        include devices/timer.i
+
+        XREF _LVOCreateMsgPort
+        XREF _LVOCreateIORequest
+        XREF _LVOOpenDevice
+        XREF _LVOOpenLibrary
+        XREF _LVOVPrintf
+        XREF _LVOReadArgs
+        XREF _LVOOpen
+        XREF _LVOFGets
+        XREF _LVOAllocVec
+        XREF _LVOSeek
+        XREF _LVOFGets
+        XREF _LVOClose
+        XREF _LVOFreeVec
+        XREF _LVOFreeArgs
+        XREF _LVOCloseLibrary
+        XREF _LVOCloseDevice
+        XREF _LVODeleteIORequest
+        XREF _LVODeleteMsgPort
+        XREF _LVOReadEClock
+        XREF _LVOIEEESPFltle
+        XREF _LVOIEEESPFlt
+        XREF _LVOIEEESPSub
+        XREF _LVOIEEESPDiv
+        XREF _LVOIEEESPMul
+        XREF _LVOIEEESPFix
+        XREF _LVOIoErr
+        XREF _LVOPrintFault
+
 
 _SYSBase = 4
 
